@@ -8,11 +8,7 @@ export default function Home() {
         <title>Local Pasal</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex">
-        <Sidebar></Sidebar>
-        {/* <Center /> */}
-      </main>
-      <div>{/* Player */}</div>
+      <Header />
     </div>
   );
 }
