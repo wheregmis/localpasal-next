@@ -11,36 +11,36 @@ import { HomeIcon } from "@heroicons/react/solid";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
-import { modalState } from "../atoms/modalAtom";
+// import { modalState } from "../atoms/modalAtom";
 
 const Header = () => {
   // destructuring props data and renaming it to session
   const { data: session } = useSession();
-  const [open, setOpen] = useRecoilState(modalState);
+  // const [open, setOpen] = useRecoilState(modalState);
   const router = useRouter();
 
   return (
     <div className="shadow-sm border-b bg-white sticky top-0 z-50">
-      <div className="flex justify-between bg-white max-w-6xl mx-5 lg:mx-auto">
+      <div className="flex justify-between bg-white max-w-6xl max-h-fit mx-5 lg:mx-auto">
         {/* Left */}
         <div
           onClick={() => router.push("/")}
-          className="relative hidden  w-24 lg:inline-grid cursor-pointer"
+          className="relative hidden w-[250px] lg:inline-grid cursor-pointer items-center justify-center"
         >
           <Image
-            src="https://links.papareact.com/ocw"
+            src="/assets/localpasal.png"
             layout="fill"
-            objectFit="contain"
+            objectFit="cover"
           ></Image>
         </div>
         <div
           onClick={() => router.push("/")}
-          className="relative w-10  lg:hidden flex-shrink-0 cursor-pointer"
+          className="relative w-[150px] lg:hidden flex-shrink-0 cursor-pointer justify-center items-center"
         >
           <Image
-            src="https://links.papareact.com/jjm"
+            src="/assets/localpasal.png"
             layout="fill"
-            objectFit="contain"
+            objectFit="cover"
           ></Image>
         </div>
         {/* Middle Search input field*/}
@@ -65,7 +65,7 @@ const Header = () => {
           {session ? (
             // this < symbol is called a section and we need to wrap value inside it while using if else>
             <>
-              <div className="relative navBtn">
+              {/* <div className="relative navBtn">
                 <PaperAirplaneIcon className="navBtn rotate-45" />
                 <div
                   className="absolute -top-2 -right-2 text-xs w-5 h-5
@@ -73,19 +73,19 @@ const Header = () => {
                 >
                   3
                 </div>
-              </div>
+              </div> */}
               <PlusCircleIcon
                 onClick={() => setOpen(true)}
                 className="navBtn"
               />
-              <UserGroupIcon className="navBtn" />
+              {/* <UserGroupIcon className="navBtn" /> */}
               <HeartIcon className="navBtn" />
 
               <img
-                onClick={signOut}
+                // onClick={signOut}
                 src={session.user.image}
                 alt="profile pic"
-                className="h-10 w-10 rounded-full cursor-pointer"
+                className="h-10 w-10 rounded-full"
               ></img>
             </>
           ) : (
