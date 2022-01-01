@@ -4,6 +4,12 @@ import {
   LibraryIcon,
   PlusCircleIcon,
   HeartIcon,
+  ChatAlt2Icon,
+  QuestionMarkCircleIcon,
+  ViewGridAddIcon,
+  SupportIcon,
+  SpeakerphoneIcon,
+  BookOpenIcon,
   RssIcon,
 } from "@heroicons/react/outline";
 import { signOut, useSession } from "next-auth/react";
@@ -39,7 +45,7 @@ function Sidebar() {
           <p>Liked Products</p>
         </button>
         <button className="flex items-center space-x-2 btn">
-          <RssIcon className="h-5 w-5" />
+          <ChatAlt2Icon className="h-5 w-5" />
           <p>Enquiries</p>
         </button>
         <hr className="border-t-[0.1px] border-gray-900"></hr>
@@ -47,38 +53,35 @@ function Sidebar() {
           <RssIcon className="h-5 w-5" />
           <p>Blog Feed</p>
         </button>
-        <button className="flex items-center space-x-2 btn">
-          <RssIcon className="h-5 w-5" />
-          <p>Ecommerce (Soon)</p>
-        </button>
-        <button className="flex items-center space-x-2 btn">
-          <RssIcon className="h-5 w-5" />
-          <p>FAQ</p>
-        </button>
+
         <hr className="border-t-[0.1px] border-gray-900"></hr>
         <button className="flex items-center space-x-2 btn">
-          <RssIcon className="h-5 w-5" />
+          <ViewGridAddIcon className="h-5 w-5" />
           <p>Request New Category</p>
         </button>
         <button className="flex items-center space-x-2 btn">
-          <RssIcon className="h-5 w-5" />
+          <ViewGridAddIcon className="h-5 w-5" />
           <p>Request New SubCategory</p>
         </button>
         <button className="flex items-center space-x-2 btn">
-          <RssIcon className="h-5 w-5" />
+          <SpeakerphoneIcon className="h-5 w-5" />
           <p>Suggest New Feature</p>
         </button>
         <button className="flex items-center space-x-2 btn">
-          <RssIcon className="h-5 w-5" />
+          <SupportIcon className="h-5 w-5" />
           <p>Improve Local Pasal</p>
         </button>
         <hr className="border-t-[0.1px] border-gray-900"></hr>
         <button className="flex items-center space-x-2 btn">
-          <RssIcon className="h-5 w-5" />
+          <BookOpenIcon className="h-5 w-5" />
           <p>Terms and Conditions</p>
         </button>
         <button className="flex items-center space-x-2 btn">
-          <RssIcon className="h-5 w-5" />
+          <QuestionMarkCircleIcon className="h-5 w-5" />
+          <p>FAQ</p>
+        </button>
+        <button className="flex items-center space-x-2 btn">
+          <BookOpenIcon className="h-5 w-5" />
           <p>Privacy Policy</p>
         </button>
         <hr className="border-t-[0.1px] border-gray-900"></hr>
