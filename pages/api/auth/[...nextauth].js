@@ -1,10 +1,4 @@
-import {
-  addDoc,
-  collection,
-  doc,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { db } from "../../../firebase";
@@ -28,7 +22,7 @@ export default NextAuth({
   pages: {
     // the convention is to use signin inside the pages folder under auth
     //
-    signIn: "index",
+    signIn: "/auth/signin",
   },
   callbacks: {
     async session({ session, token, user }) {
