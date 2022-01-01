@@ -33,7 +33,7 @@ export default NextAuth({
       session.user.uid = token.sub;
 
       // also before returning a session, lets add the user to the database
-      setDoc(doc(db, "users", token.sub), {
+      await setDoc(doc(db, "users", token.sub), {
         userId: token.sub,
         userName: token.name,
         userEmail: token.email,
