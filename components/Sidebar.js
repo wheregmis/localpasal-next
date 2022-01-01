@@ -22,7 +22,7 @@ function Sidebar() {
   const [open, setOpen] = useRecoilState(modalState);
 
   return (
-    <div className="text-gray-500 p-5 text-sm border-r overflow-y-scroll scrollbar-hide h-screen min-w-[250px]">
+    <div className="hidden md:inline text-gray-500 p-5 text-sm border-r overflow-y-scroll scrollbar-hide h-screen min-w-[250px]">
       <div className="space-y-4 mb-10">
         <button className="flex items-center space-x-2 btn">
           <HomeIcon className="h-5 w-5" />

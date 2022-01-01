@@ -8,8 +8,8 @@ function BannerCarousel() {
     <main>
       <div>
         <Carousel infiniteLoop={1 === 1} autoPlay={1 === 1}>
-          <div className="min-h-[69vh] max-h-[69vh] items-center justify-center">
-            <img src="/assets/localpasal.png" alt="image1" />
+          <div className=" max-h-[69vh] items-center justify-center">
+            <img src="/assets/iphone.jpg" alt="image1" />
             <button className="legend">Happy New Year 2022</button>
           </div>
           <div>

@@ -36,13 +36,9 @@ const Header = () => {
         </div>
         <div
           onClick={() => router.push("/")}
-          className="relative w-[150px] lg:hidden flex-shrink-0 cursor-pointer justify-center items-center"
+          className="relative w-[50px] lg:hidden flex-shrink-0 cursor-pointer justify-center items-center"
         >
-          <Image
-            src="/assets/localpasal.png"
-            layout="fill"
-            objectFit="cover"
-          ></Image>
+          <Image src="/icon.png" layout="fill" objectFit="contain"></Image>
         </div>
         {/* Middle Search input field*/}
         <div className="relative max-w-2xl w-[350px] ">
@@ -86,12 +82,12 @@ const Header = () => {
                 onClick={signOut}
                 src={session.user.image}
                 alt="profile pic"
-                className="h-10 w-10 mr-8 rounded-full cursor-pointer"
+                className="h-10 w-10 mr-3 rounded-full cursor-pointer"
               ></img>
             </>
           ) : (
-            <button className="mr-8" onClick={signIn}>
-              Sign In
+            <button className=" mr-3 text-sm md:text-xl" onClick={signIn}>
+              Log In
             </button>
           )}
         </div>
