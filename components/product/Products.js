@@ -26,18 +26,18 @@ function Products(props) {
   );
 
   return (
-    <div>
-      {products.map((product) => {
-        return (
-          <div
-            className="p-2 border-gray-200 border 
-          rounded-sm"
-          >
-            <div className="flex justify-between p-6">
-              <h1>Latest Products</h1>
-              <button>See All</button>
-            </div>
-            <div className="flex space-x-2 bg-white  overflow-x-scroll overflow-y-hidden scrollbar-thin scrollbar-thumb-black">
+    <div
+      className="p-2 border-gray-200 border
+    rounded-sm"
+    >
+      <div className="flex justify-between p-6">
+        <h1>Latest Products</h1>
+        <button>See All</button>
+      </div>
+      <div className="flex flex-wrap overflow-x-scroll overflow-y-hidden scrollbar-thin scrollbar-thumb-black space-x-2">
+        {products.map((product) => {
+          return (
+            <div className="flex bg-white ">
               <ProductCard
                 key={product.id}
                 id={product.id}
@@ -46,9 +46,9 @@ function Products(props) {
                 productImage={product.data().image}
               />
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }

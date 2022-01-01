@@ -36,8 +36,8 @@ function Modal() {
       productTitle: titleRef.current.value,
       productPrice: priceRef.current.value,
       productDescription: descriptionRef.current.value,
-      productCategory: "",
-      productSubCategory: "",
+      productCategory: "unknown",
+      productSubCategory: "unknown",
       timestamp: serverTimestamp(),
     });
 

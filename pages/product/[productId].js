@@ -1,11 +1,26 @@
 import { doc, getDoc } from "firebase/firestore";
+import Head from "next/head";
+import Header from "../../components/Header";
+import Modal from "../../components/Modal";
+import ProductPageBody from "../../components/product/ProductPageBody";
+import Sidebar from "../../components/Sidebar";
 import { db } from "../../firebase";
+import { useEffect, useState } from "react";
+
 function ProductPage(props) {
-  console.log(props.product);
   return (
-    <div>
-      <h1>{props.productId}</h1>
-      <h1>{props.productTitle}</h1>
+    <div className="h-screen overflow-hidden">
+      <Head>
+        <title>Local Pasal</title>
+        <link rel="icon" href="/icon.png" />
+      </Head>
+      <Header />
+      <main className="flex">
+        <Sidebar />
+        {/* Page Specific Code */}
+        <ProductPageBody product={props} />
+      </main>
+      <Modal />
     </div>
   );
 }
@@ -31,15 +46,18 @@ export async function getStaticProps(content) {
     props: {
       productId: productId,
       productTitle: product.data().productTitle,
+      productCategory: product.data().productCategory,
+      productSubCategory: product.data().productSubCategory,
+      productImage: product.data().image,
     },
-    revalidate: 1000,
+    revalidate: 1,
   };
 }
 
 export async function getStaticPaths() {
   return {
     paths: [{ params: { productId: "PfatfPNVaEF4gPLELAMo" } }],
-    fallback: false,
+    fallback: true,
   };
 }
 
