@@ -11,6 +11,7 @@ import { HomeIcon } from "@heroicons/react/solid";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
+import MiniProfile from "./MiniProfile";
 // import { modalState } from "../atoms/modalAtom";
 
 const Header = () => {
@@ -44,7 +45,7 @@ const Header = () => {
           ></Image>
         </div>
         {/* Middle Search input field*/}
-        <div className="max-w-xs">
+        <div className="relative max-w-2xl w-[350px] ">
           <div className="relative mt-1 p-3 rounded-md">
             <div className="absolute inset-y-0 pl-3 flex items-center pointer-events-none">
               <SearchIcon className="h-5 w-5 text-gray-400"></SearchIcon>
@@ -58,9 +59,9 @@ const Header = () => {
           </div>
         </div>
         {/* Right */}
-        <div className="flex items-center justify-end space-x-4">
-          <HomeIcon onClick={() => router.push("/")} className="navBtn" />
-          <MenuIcon className="h-6 md:hidden cursor-pointer" />
+        <div className="flex items-center justify-end ">
+          {/* <HomeIcon onClick={() => router.push("/")} className="navBtn" /> */}
+          {/* <MenuIcon className="h-6 md:hidden cursor-pointer" /> */}
 
           {session ? (
             // this < symbol is called a section and we need to wrap value inside it while using if else>
@@ -74,22 +75,24 @@ const Header = () => {
                   3
                 </div>
               </div> */}
-              <PlusCircleIcon
+              {/* <PlusCircleIcon
                 onClick={() => setOpen(true)}
                 className="navBtn"
               />
               {/* <UserGroupIcon className="navBtn" /> */}
-              <HeartIcon className="navBtn" />
+              {/* <HeartIcon className="navBtn" /> */}
 
               <img
-                // onClick={signOut}
+                onClick={signOut}
                 src={session.user.image}
                 alt="profile pic"
-                className="h-10 w-10 rounded-full"
+                className="h-10 w-10 mr-8 rounded-full cursor-pointer"
               ></img>
             </>
           ) : (
-            <button onClick={signIn}>Sign In</button>
+            <button className="mr-8" onClick={signIn}>
+              Sign In
+            </button>
           )}
         </div>
       </div>

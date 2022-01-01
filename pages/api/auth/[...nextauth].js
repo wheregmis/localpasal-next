@@ -1,5 +1,13 @@
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
+import { db } from "../../../firebase";
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -28,6 +36,15 @@ export default NextAuth({
         .join("")
         .toLocaleLowerCase();
       session.user.uid = token.sub;
+
+      // also before returning a session, lets add the user to the database
+      setDoc(doc(db, "users", token.sub), {
+        userId: token.sub,
+        userName: token.name,
+        userEmail: token.email,
+        userImage: token.picture,
+        userCreatedAt: serverTimestamp(),
+      });
       return session;
     },
   },
