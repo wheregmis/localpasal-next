@@ -27,7 +27,8 @@ export default NextAuth({
 
   pages: {
     // the convention is to use signin inside the pages folder under auth
-    signIn: "/auth/signin",
+    //
+    signIn: "index",
   },
   callbacks: {
     async session({ session, token, user }) {

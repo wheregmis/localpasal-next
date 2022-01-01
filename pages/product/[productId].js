@@ -32,6 +32,7 @@ export async function getStaticProps(content) {
       productId: productId,
       productTitle: product.data().productTitle,
     },
+    revalidate: 1000,
   };
 }
 
