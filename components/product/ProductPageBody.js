@@ -3,14 +3,9 @@ import ImageGalary from "./ImageGalary";
 import dynamic from "next/dynamic";
 import useInView from "react-cool-inview";
 import ProductDetailTab from "./ProductDetailTab";
-
-// dynamic imports
-const Products = dynamic(() => import("./Products"));
+import Products from "./Products";
 
 function ProductPageBody(props) {
-  const { observe, inView } = useInView({
-    onEnter: ({ unobserve }) => unobserve(), // only run once
-  });
   return (
     <div className="text-gray-500 p-5 text-sm border-r overflow-y-scroll scrollbar-hide h-screen w-screen">
       <div className="space-y-4 mb-28 max-h-screen max-w-full">
@@ -33,12 +28,11 @@ function ProductPageBody(props) {
           <div className="bg-white -mt-10 mb-8 items-center justify-center">
             <ProductDetailTab />
           </div>
-          <div ref={observe}>
+          <div>
             <SellerDisclosure />
           </div>
           <div className="mb-20">
-            {/* comments will load when inView is true */}
-            {inView && <Products />}
+            <Products />
           </div>
         </div>
       </div>

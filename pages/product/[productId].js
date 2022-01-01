@@ -50,7 +50,7 @@ export async function getStaticProps(content) {
       productSubCategory: product.data().productSubCategory,
       productImage: product.data().image,
     },
-    revalidate: 1,
+    revalidate: 100,
   };
 }
 
