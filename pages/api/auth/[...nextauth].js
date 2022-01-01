@@ -24,6 +24,7 @@ export default NextAuth({
     //
     signIn: "/auth/signin",
   },
+  secret: process.env.NEXT_AUTH_SECRET,
   callbacks: {
     async session({ session, token, user }) {
       session.user.username = session.user.name
@@ -31,7 +32,6 @@ export default NextAuth({
         .join("")
         .toLocaleLowerCase();
       session.user.uid = token.sub;
-
       // also before returning a session, lets add the user to the database
       await setDoc(doc(db, "users", token.sub), {
         userId: token.sub,
@@ -43,5 +43,4 @@ export default NextAuth({
       return session;
     },
   },
-  secret: process.env.NEXT_AUTH_SECRET,
 });

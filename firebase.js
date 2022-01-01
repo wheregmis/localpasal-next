@@ -8,12 +8,12 @@ import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
+  apiKey: "AIzaSyCPtn4pVveojVnMwvw9jT-V1qcuoBXVQTM",
   authDomain: "insta-clone-5c63b.firebaseapp.com",
   projectId: "insta-clone-5c63b",
   storageBucket: "insta-clone-5c63b.appspot.com",
   messagingSenderId: "188080443109",
-  appId: process.env.FIREBASE_APP_ID,
+  appId: "1:188080443109:web:430aca006bfeb5de898e0c",
 };
 
 // Initialize Firebase if its not initialized alread
