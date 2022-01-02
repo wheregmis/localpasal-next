@@ -80,7 +80,7 @@ const Header = () => {
 
               <img
                 onClick={signOut}
-                src={session.user.image}
+                src=""
                 alt="profile pic"
                 className="h-10 w-10 mr-3 rounded-full cursor-pointer"
               ></img>
