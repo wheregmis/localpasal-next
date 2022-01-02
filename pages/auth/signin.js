@@ -1,20 +1,32 @@
 import { getProviders, signIn } from "next-auth/react";
 import Header from "../../components/Header";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 //Browser...
-function SignIn({ providers }) {
+function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [isLoginStarted, setIsLoginStarted] = useState(false);
   const router = useRouter();
-  async function handleSignin(email, password) {
-    const res = await signIn("credentials", {
-      redirect: false,
-      email: "get2sabin@gmail.com",
-      password: "testing123",
+  const handleLogin = (e) => {
+    console.log("pressed");
+    e.preventDefault();
+    setIsLoginStarted(true);
+    signIn("credentials", {
+      email,
+      password,
       callbackUrl: "/",
     });
-    // if (res?.error) handleError(res.error);
-    if (res.url) router.push(res.url);
-  }
+  };
+
+  useEffect(() => {
+    if (router.query.error) {
+      setLoginError(router.query.error);
+      setEmail(router.query.email);
+    }
+  }, [router]);
 
   return (
     <>
@@ -34,29 +46,35 @@ function SignIn({ providers }) {
               Sign in with Google
             </button>
           </div> */}
-          <div>
+          <div className="flex-col">
+            <label htmlFor="loginEmail">Email</label>
+            <input
+              id="loginEmail"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={loginError ? "bg-red-500" : ""}
+            />
+            <span className="bg-red-500">{loginError}</span>
+            <label htmlFor="inputPassword">Password</label>
+            <input
+              id="inputPassword"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <button
+              onClick={(e) => handleLogin(e)}
+              disabled={isLoginStarted}
               className="p-3 bg-blue-500 rounded-lg text-white"
-              onClick={handleSignin}
             >
-              Sign in with LocalPasal
+              Log In
             </button>
           </div>
         </div>
       </div>
     </>
   );
-}
-
-// passing the provider stuffs from server to client
-// now the signin can get access to the providers using props.providers
-export async function getServerSideProps() {
-  const providers = await getProviders();
-  return {
-    props: {
-      providers,
-    },
-  };
 }
 
 export default SignIn;

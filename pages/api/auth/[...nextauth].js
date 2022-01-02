@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+import axios from "axios";
 export default NextAuth({
   // Configure one or more authentication providers
   providers: [
@@ -15,30 +16,42 @@ export default NextAuth({
       // You can specify whatever fields you are expecting to be submitted.
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         // You need to provide your own logic here that takes the credentials
         // submitted and returns either a object representing a user or value
         // that is false/null if the credentials are invalid.
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-        const res = await fetch("https://localpasal.herokuapp.com/login", {
-          method: "POST",
-          body: JSON.stringify({
+        const res = await axios.post(
+          "https://localpasal.herokuapp.com/login",
+          {
             email: credentials.email,
             password: credentials.password,
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        console.log(res);
-        const user = await res.json();
+          },
+          {
+            headers: {
+              accept: "*/*",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        // .then(function (response) {
+        //   console.log(response);
+        //   const user = response.data;
+        //   return user;
+        // })
+        // .catch(function (error) {
+        //   console.log(error);
+        //   // throw new Error(errorMessage + "&email=" + credentials.email);
+        // });
 
-        // // If no error and we have user data, return it
-        if (res.ok && user) {
+        if (res.statusText === "OK") {
+          const user = res.data;
           return user;
+        } else {
+          throw new Error(res.data);
         }
-        // // Redirecting to the login page with error messsage in the URL
-        throw new Error(res.json());
       },
     }),
   ],
@@ -53,15 +66,38 @@ export default NextAuth({
     // the convention is to use signin inside the pages folder under auth
     //
     signIn: "/auth/signin",
-    error: "/error",
+    error: "/auth/signin",
   },
   secret: process.env.NEXT_AUTH_SECRET,
   callbacks: {
-    async session({ session, token, user }) {
-      session.refresh_token = token.refresh_token;
-      session.access_token = token.access_token;
-      session.user.uid = token.refresh_token;
-      session.user = token.user;
+    async jwt({ token, account, user }) {
+      // initial signin
+      // Persist the OAuth access_token to the token right after signin
+      if (account && user) {
+        token.accessToken = user.access_token;
+        token.refreshToken = user.refresh_token;
+        token.user = user.user;
+        token.expires_at = user.expires_at * 1000;
+      }
+
+      return token;
+      // // Returns the previous token if the access token has not expired
+      // if (Date.now() < token.accessTokenExpires) {
+      //   console.log("EXISTING ACCESS TOKEN IN VALID");
+      //   return token;
+      // }
+
+      // //ACCESS TOKEN HAS EXPIRED, SO WE NEED TO REFRESH IT
+      // console.log("ACCESS TOKEN HAS EXPIRED, REFRESHING");
+      // return await refreshAccessTokenCustom(token);
+    },
+
+    async session({ session, token }) {
+      session.refresh_token = token.refreshToken;
+      session.access_token = token.accessToken;
+      session.user.uid = token.user._id;
+      session.user.username = token.user.fullName;
+      session.user.image = token.user.userImage;
       return session;
     },
   },
