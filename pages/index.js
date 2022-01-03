@@ -1,10 +1,8 @@
 import Head from "next/head";
-import BannerCarousel from "../components/BannerCarousel";
-import Feed from "../components/Feed";
-import Header from "../components/Header";
-import HomepageBody from "../components/homepage/HomepageBody";
-import Modal from "../components/Modal";
-import Sidebar from "../components/Sidebar";
+import Header from "@components/Header";
+import HomepageBody from "@components/homepage/HomepageBody";
+import Modal from "@components/Modal";
+import Sidebar from "@components/Sidebar";
 
 export default function Home() {
   return (

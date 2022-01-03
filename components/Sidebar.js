@@ -21,6 +21,8 @@ function Sidebar() {
   const { data: session, status } = useSession();
   const [open, setOpen] = useRecoilState(modalState);
 
+  console.log(session);
+
   return (
     <div className="hidden md:inline text-gray-500 p-5 text-sm border-r overflow-y-scroll scrollbar-hide h-screen min-w-[250px]">
       <div className="space-y-4 mb-10">

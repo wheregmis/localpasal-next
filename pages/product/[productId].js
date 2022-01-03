@@ -1,11 +1,10 @@
 import { doc, getDoc } from "firebase/firestore";
 import Head from "next/head";
-import Header from "../../components/Header";
-import Modal from "../../components/Modal";
-import ProductPageBody from "../../components/product/ProductPageBody";
-import Sidebar from "../../components/Sidebar";
+import Header from "@components/Header";
+import Modal from "@components/Modal";
+import ProductPageBody from "@components/product/ProductPageBody";
+import Sidebar from "@components/Sidebar";
 import { db } from "../../firebase";
-import { useEffect, useState } from "react";
 
 function ProductPage(props) {
   return (
