@@ -1,7 +1,7 @@
 import { signIn } from "next-auth/react";
-import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
-import Modal from "@/components/Modal";
+import Header from "@components/Header";
+import Sidebar from "@components/Sidebar";
+import Modal from "@components/Modal";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Head from "next/head";
