@@ -73,19 +73,28 @@ export default NextAuth({
     async jwt({ token, account, user }) {
       // initial signin
       // Persist the OAuth access_token to the token right after signin
+
       if (account && user) {
+        console.log("initial signin");
         token.accessToken = user.access_token;
         token.refreshToken = user.refresh_token;
         token.user = user.user;
-        token.expires_at = user.expires_at * 1000;
+        token.expires_at = user.expires_at;
+        return token;
       }
 
+      console.log("refreshed signin");
+      console.log(token.expires_at);
+      console.log(Date.now());
+
+      // return token;
+      // Returns the previous token if the access token has not expired
+      if (Date.now() < token.expires_at) {
+        console.log("EXISTING ACCESS TOKEN IN VALID");
+        return token;
+      }
+      console.log("Token not valid ACCESS TOKEN IN VALID");
       return token;
-      // // Returns the previous token if the access token has not expired
-      // if (Date.now() < token.accessTokenExpires) {
-      //   console.log("EXISTING ACCESS TOKEN IN VALID");
-      //   return token;
-      // }
 
       // //ACCESS TOKEN HAS EXPIRED, SO WE NEED TO REFRESH IT
       // console.log("ACCESS TOKEN HAS EXPIRED, REFRESHING");

@@ -6,19 +6,18 @@ import axios from "axios";
 import { signOut, useSession } from "next-auth/react";
 
 function HomepageBody() {
-  const { data: session, status } = useSession();
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: "Bearer " + session?.access_token,
-  };
   const fetcher = async () => {
     const response = await axios.get(
-      "https://localpasal.herokuapp.com/category/",
-      { headers: headers }
+      "https://localpasal.herokuapp.com/category/"
     );
     return response.data;
   };
-  const { data, error } = useSWR("category", fetcher);
+  const { data, error } = useSWR("category", fetcher, {
+    refreshInterval: 100000,
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
 
   return (
     <div className="text-gray-500 text-sm border-r overflow-y-scroll scrollbar-hide h-screen min-w-[250px]">

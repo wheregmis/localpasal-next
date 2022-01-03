@@ -37,7 +37,7 @@ function Products(props) {
       <div className="flex flex-wrap overflow-x-scroll overflow-y-hidden scrollbar-thin scrollbar-thumb-black space-x-2">
         {products.map((product) => {
           return (
-            <div className="flex bg-white ">
+            <div key={product.id} className="flex bg-white ">
               <ProductCard
                 key={product.id}
                 id={product.id}
