@@ -3,11 +3,11 @@ import Header from "@components/Header";
 import Modal from "@components/Modal";
 import ProductPageBody from "@components/product/ProductPageBody";
 import Sidebar from "@components/Sidebar";
-import { latest_product } from "helpers/product_helper";
+import { latest_product, product_details } from "helpers/product_helper";
 import { LOCALPASAL_BACKEND_BASE_URL } from "helpers/backend_helper";
 import axios from "axios";
 
-export function ProductPage({ productId }) {
+export function ProductPage({ productId, product }) {
   return (
     <div className="h-screen overflow-hidden">
       <Head>
@@ -18,7 +18,7 @@ export function ProductPage({ productId }) {
       <main className="flex">
         <Sidebar />
         {/* Page Specific Code */}
-        <ProductPageBody productId={productId} />
+        <ProductPageBody product={product} />
       </main>
       <Modal />
     </div>
@@ -27,9 +27,13 @@ export function ProductPage({ productId }) {
 
 export async function getStaticProps(context) {
   const productId = context.params.productId;
+  const product = await axios.get(
+    `${LOCALPASAL_BACKEND_BASE_URL}/product/${productId}`
+  );
   return {
     props: {
       productId: productId,
+      product: JSON.stringify(product.data),
     },
     revalidate: 1000,
   };
@@ -40,7 +44,6 @@ export async function getStaticPaths() {
   const paths = products.data.map((product) => ({
     params: { productId: product._id },
   }));
-  console.log(paths);
   // We'll pre-render only these paths at build time.
   // { fallback: blocking } will server-render pages
   // on-demand if the path doesn't exist.

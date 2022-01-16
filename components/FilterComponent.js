@@ -1,6 +1,4 @@
 import { all_category } from "helpers/category_helper";
-import { product_details } from "helpers/product_helper";
-import { useState } from "react";
 
 function FilterComponent({ filterType }) {
   const { data, isLoading, isError } = all_category();
