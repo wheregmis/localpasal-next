@@ -3,16 +3,11 @@ import { modalState } from "../atoms/modalAtom";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useRef, useState } from "react";
 import { CameraIcon } from "@heroicons/react/outline";
-import { db, storage } from "../firebase";
-import {
-  addDoc,
-  collection,
-  doc,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { storage } from "../firebase";
 import { useSession } from "next-auth/react";
 import { ref, getDownloadURL, uploadString } from "firebase/storage";
+import axios from "axios";
+import { LOCALPASAL_BACKEND_BASE_URL } from "helpers/backend_helper";
 
 function Modal() {
   const [open, setOpen] = useRecoilState(modalState);
@@ -24,6 +19,9 @@ function Modal() {
   const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
+
+
+
   const uploadPost = async () => {
     if (loading) return;
 
@@ -31,28 +29,64 @@ function Modal() {
 
     // 1. create a post and add to firestore 'post collection'
     // 2. get the post id for newly created post
-    const docRef = await addDoc(collection(db, "products"), {
-      sellerId: session.user?.uid,
-      productTitle: titleRef.current.value,
-      productPrice: priceRef.current.value,
-      productDescription: descriptionRef.current.value,
-      productCategory: "unknown",
-      productSubCategory: "unknown",
-      timestamp: serverTimestamp(),
-    });
 
-    console.log("New document added in the firestore", docRef.id);
+    const body = {
+      "productTitle": titleRef.current.value,
+      "productPrice": priceRef.current.value,
+      "productCategory": "unknown",
+      "productSubCategory": "unknown",
+      "productDescription": descriptionRef.current.value,
+      "productImage": "",
+      "sellerUid": session.user?.uid,
+      "timestamp": Date.now()
+        }
 
-    // 3. upload the image to firebase storage with post id
-    const imageRef = ref(storage, `products/${docRef.id}/image`);
+    console.log(body)
 
-    await uploadString(imageRef, selectedFile, "data_url").then(
-      async (snapshot) => {
-        // 4. get a download url from firebase storage and update to firebase original post collection
-        const downloadURL = await getDownloadURL(imageRef);
-        await updateDoc(doc(db, "products", docRef.id), { image: downloadURL });
-      }
+    const response = await axios.post(`${LOCALPASAL_BACKEND_BASE_URL}/product/`, body, {
+          headers: {
+            "Authorization": `Bearer ${session.access_token}`,
+          },
+        })
+        .then(function (response) {
+          console.log(response);
+          console.log("New document added in the mongodb", response.data);
+
+          // 3. upload the image to firebase storage with post id
+          const imageRef = ref(storage, `products/${response.data._id}/image`);
+
+          uploadString(imageRef, selectedFile, "data_url").then(
+            async (snapshot) => {
+              // 4. get a download url from firebase storage and update to firebase original post collection
+              const downloadURL =  await getDownloadURL(imageRef);
+              console.log('Image Uploaded Successfully')
+              console.log("Now need to update product with image")
+              // await updateDoc(doc(db, "products", docRef.id), { image: downloadURL });
+
+              const product = {
+                "productTitle": response.data.productTitle,
+                "productPrice": response.data.productPrice,
+                "productCategory": "unknown",
+                "productSubCategory": "unknown",
+                "productDescription": response.data.productDescription,
+                "productImage": downloadURL,
+                "sellerUid": session.user?.uid,
+                "timestamp": response.data.timestamp
+              }
+
+               axios.put(`${LOCALPASAL_BACKEND_BASE_URL}/product/${response.data._id}`, product, {
+                headers: {
+                  "Authorization": `Bearer ${session.access_token}`,
+                },
+              })
+            }
     );
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+    
 
     setOpen(false);
     setLoading(false);

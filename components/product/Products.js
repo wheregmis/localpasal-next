@@ -1,29 +1,8 @@
-import {
-  collection,
-  limit,
-  onSnapshot,
-  orderBy,
-  query,
-} from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { db } from "../../firebase";
 import ProductCard from "../ProductCard";
+import { latest_product, product_details } from "helpers/product_helper";
 
-function Products(props) {
-  const [products, setProducts] = useState([]);
-  const latestProductQuery = query(
-    collection(db, "products"),
-    orderBy("timestamp", "desc"),
-    limit(5)
-  );
-
-  useEffect(
-    () =>
-      onSnapshot(latestProductQuery, (snapshot) => {
-        setProducts(snapshot.docs);
-      }),
-    [db]
-  );
+function Products() {
+  const { data, isLoading, isError } = latest_product();
 
   return (
     <div
@@ -35,19 +14,23 @@ function Products(props) {
         <button>See All</button>
       </div>
       <div className="flex flex-wrap overflow-x-scroll overflow-y-hidden scrollbar-thin scrollbar-thumb-black space-x-2">
-        {products.map((product) => {
-          return (
-            <div key={product.id} className="flex bg-white ">
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                productTitle={product.data().productTitle}
-                productPrice={product.data().productPrice}
-                productImage={product.data().image}
-              />
-            </div>
-          );
-        })}
+        {data &&
+          data.map((product) => {
+            console.log(product);
+            return (
+              <div key={product._id} className="flex bg-white ">
+                {
+                  <ProductCard
+                    key={product._id}
+                    id={product._id}
+                    productTitle={product.productTitle}
+                    productPrice={product.productPrice}
+                    productImage={product.productImage}
+                  />
+                }
+              </div>
+            );
+          })}
       </div>
     </div>
   );

@@ -2,6 +2,28 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
+
+async function refreshAccessTokenCustom(token) {
+  try {
+    const response = await axios.get(`${LOCALPASAL_BACKEND_BASE_URL}/refresh/`, {
+      headers: {
+        "Authorization": `Bearer ${session.refresh_token}`,
+      },
+    });
+    
+      token.access_token = response.data.access_token;
+      return token;
+
+    
+  } catch (error) {
+    console.error(error);
+    return {
+      ...token,
+      error: "RefreshAccessTokenError",
+    };
+  }
+}
+
 export default NextAuth({
   // Configure one or more authentication providers
   providers: [
@@ -79,13 +101,13 @@ export default NextAuth({
         token.accessToken = user.access_token;
         token.refreshToken = user.refresh_token;
         token.user = user.user;
-        token.expires_at = user.expires_at;
+        token.expires_at = user.expires_at * 1000;
         return token;
       }
 
       console.log("refreshed signin");
-      console.log(token.expires_at);
-      console.log(Date.now());
+      // console.log(token.expires_at);
+      // console.log(Date.now());
 
       // return token;
       // Returns the previous token if the access token has not expired
@@ -93,12 +115,11 @@ export default NextAuth({
         console.log("EXISTING ACCESS TOKEN IN VALID");
         return token;
       }
-      console.log("Token not valid ACCESS TOKEN IN VALID");
-      return token;
 
-      // //ACCESS TOKEN HAS EXPIRED, SO WE NEED TO REFRESH IT
-      // console.log("ACCESS TOKEN HAS EXPIRED, REFRESHING");
-      // return await refreshAccessTokenCustom(token);
+      //ACCESS TOKEN HAS EXPIRED, SO WE NEED TO REFRESH IT
+      console.log("ACCESS TOKEN HAS EXPIRED, REFRESHING");
+      
+      return await refreshAccessTokenCustom(token);
     },
 
     async session({ session, token }) {

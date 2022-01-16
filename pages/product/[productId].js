@@ -1,12 +1,13 @@
-import { doc, getDoc } from "firebase/firestore";
 import Head from "next/head";
 import Header from "@components/Header";
 import Modal from "@components/Modal";
 import ProductPageBody from "@components/product/ProductPageBody";
 import Sidebar from "@components/Sidebar";
-import { db } from "../../firebase";
+import { latest_product } from "helpers/product_helper";
+import { LOCALPASAL_BACKEND_BASE_URL } from "helpers/backend_helper";
+import axios from "axios";
 
-function ProductPage(props) {
+export function ProductPage({ productId }) {
   return (
     <div className="h-screen overflow-hidden">
       <Head>
@@ -17,47 +18,33 @@ function ProductPage(props) {
       <main className="flex">
         <Sidebar />
         {/* Page Specific Code */}
-        <ProductPageBody product={props} />
+        <ProductPageBody productId={productId} />
       </main>
       <Modal />
     </div>
   );
 }
 
-// export async function getServerSideProps(context) {
-//   const { params } = context;
-
-//   const productId = params.productId;
-
-//   return {
-//     props: {
-//       productId: productId,
-//     },
-//   };
-// }
-
-export async function getStaticProps(content) {
-  const productId = content.params.productId;
-  const docRef = doc(db, "products", productId);
-  const product = await getDoc(docRef);
-
+export async function getStaticProps(context) {
+  const productId = context.params.productId;
   return {
     props: {
       productId: productId,
-      productTitle: product.data().productTitle,
-      productCategory: product.data().productCategory,
-      productSubCategory: product.data().productSubCategory,
-      productImage: product.data().image,
     },
-    revalidate: 100,
+    revalidate: 1000,
   };
 }
 
 export async function getStaticPaths() {
-  return {
-    paths: [{ params: { productId: "PfatfPNVaEF4gPLELAMo" } }],
-    fallback: true,
-  };
+  const products = await axios.get(`${LOCALPASAL_BACKEND_BASE_URL}/product/`);
+  const paths = products.data.map((product) => ({
+    params: { productId: product._id },
+  }));
+  console.log(paths);
+  // We'll pre-render only these paths at build time.
+  // { fallback: blocking } will server-render pages
+  // on-demand if the path doesn't exist.
+  return { paths, fallback: "blocking" };
 }
 
 export default ProductPage;

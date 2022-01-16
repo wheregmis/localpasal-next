@@ -1,15 +1,17 @@
-import faker from "faker";
-import { useEffect, useState } from "react";
-import useSWR from "swr";
+import { all_category } from "helpers/category_helper";
+import { product_details } from "helpers/product_helper";
+import { useState } from "react";
 
-function FilterComponent({ categories }) {
+function FilterComponent({ filterType }) {
+  const { data, isLoading, isError } = all_category();
+
   return (
     <div className="flex space-x-1 mt-4 ml-5 overflow-x-scroll scrollbar-thin scrollbar-thumb-black">
-      {categories &&
-        categories?.map((category) => {
+      {data &&
+        data.map((category) => {
           return (
             <div
-              key={category.categoryId}
+              key={category._id}
               className="border-gray-300 shadow-sm border mb-2 px-4 py-2
       rounded-full"
             >
