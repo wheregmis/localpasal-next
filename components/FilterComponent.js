@@ -3,6 +3,7 @@ import { all_category } from "helpers/category_helper";
 function FilterComponent({ filterType }) {
   const { data, isLoading, isError } = all_category();
 
+  // HEY THERE
   return (
     <div className="flex space-x-1 mt-4 ml-5 overflow-x-scroll scrollbar-thin scrollbar-thumb-black">
       {data &&
